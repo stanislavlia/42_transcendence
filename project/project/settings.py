@@ -11,6 +11,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import environ 
+
+
+env = environ.Env(DEBUG=(bool, False))
+#read env
+env.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^y(*0vyacb!ccr#vw(8$3%7$rai1)l^&@35vke(fs0a0rn25b!'
+SECRET_KEY = 'django-insecure-0s&ka*ux&kv0ddgy95da62ue5*jkeua_fwq3b(*+usozu&#6kv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "myapp"
 ]
 
 MIDDLEWARE = [
