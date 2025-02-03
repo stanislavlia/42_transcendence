@@ -12,22 +12,40 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import environ 
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
+#==========================ENVIRONMENT VARS=======================
+env = environ.Env()
+env.read_env("/home/stanislav/Desktop/42_transcendence/.env") #For dev
+
+
+# Retrieve variables from .env
+DEBUG = env.bool('DEBUG', default=False)
+SECRET_KEY = env('SECRET_KEY', default='unsafe-secret-key')
+DATABASE_NAME = env('DATABASE_NAME')
+DATABASE_USER = env('DATABASE_USER')
+DATABASE_PASSWORD = env('DATABASE_PASSWORD')
+DATABASE_HOST = env('DATABASE_HOST', default='localhost')
+DATABASE_PORT = env('DATABASE_PORT', default='5432')
+TRANSCENDENCE_APP_INTRA42_UID = env('TRANSCENDENCE_APP_INTRA42_UID')
+TRANSCENDENCE_APP_INTRA42_SECRET = env('TRANSCENDENCE_APP_INTRA42_SECRET')
+TRANSCENDENCE_APP_INTRA42_REDIRECT_URI = env('TRANSCENDENCE_APP_INTRA42_REDIRECT_URI')
+SECRET_KEY = env("DJANGO_SECRET_KEY")
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0s&ka*ux&kv0ddgy95da62ue5*jkeua_fwq3b(*+usozu&#6kv'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
+
+SITE_ID = 1
 
 
 # Application definition
@@ -39,8 +57,41 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    #========Authorization with 42 Intra as provider====================
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.oauth2',
+    'allauth.socialaccount.providers.fortytwo',
     "myapp"
 ]
+
+
+
+#====================SETUP OAUTH with 42 INTRA====================
+SOCIALACCOUNT_PROVIDERS = {
+    'fortytwo': {
+        'APP': {
+            'client_id': TRANSCENDENCE_APP_INTRA42_UID,
+            'secret': TRANSCENDENCE_APP_INTRA42_SECRET,
+            'key': '' #not required by 42 provider
+        }
+    }
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT = '/'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,10 +131,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'dev_password',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'USER': DATABASE_USER,
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': DATABASE_HOST,
+        'PORT': DATABASE_PORT
     }
 }
 
