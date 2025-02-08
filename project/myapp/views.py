@@ -21,7 +21,17 @@ def home(request):
 @login_required(login_url='/login/')
 def profile_view(request):
     # will be added later
-    return render(request, 'myapp/profile.html')
+
+    user_id = request.user.id
+    user : CustomUser = request.user
+
+    logger.debug(f"USER  {user.email} VIEWS HIS PROFILE")
+
+    context = {"first_name" : user.first_name,
+               "email" : user.email,
+               "username" : user.nickname}
+
+    return render(request, 'myapp/profile.html', context=context)
 
 
 
