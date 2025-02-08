@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.routers import DefaultRouter
-from myapp import views
+from myapp import views, usermanagement_views
 
 
 
@@ -33,9 +33,9 @@ urlpatterns = [
     path('users/', views.users_page, name="users"),
 
 
-    
-    path('register/', views.register, name="register"),
-    path('login/', views.login_view, name="login"),
-    path('authorize/', views.authorize_42_student, name='authorize_42'),
-    path('auth/callback/42', views.handle_callback_from_42provider, name='handle_42_callback'),
+    #============USER MANAGEMENT==================
+    path('register/', usermanagement_views.register, name="register"),
+    path('login/', usermanagement_views.login_view, name="login"),
+    path('authorize/', usermanagement_views.authorize_42_student, name='authorize_42'),
+    path('auth/callback/42', usermanagement_views.handle_callback_from_42provider, name='handle_42_callback'),
 ]
