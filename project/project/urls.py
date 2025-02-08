@@ -34,7 +34,7 @@ urlpatterns = [
 
 
     
-
+    path('register/', views.register, name="register"),
     path('login/', views.login_view, name="login"),
     path('authorize/', views.authorize_42_student, name='authorize_42'),
     path('auth/callback/42', views.handle_callback_from_42provider, name='handle_42_callback'),

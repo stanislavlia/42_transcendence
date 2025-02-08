@@ -1,0 +1,25 @@
+<!-- templates/myapp/register.html -->
+{% extends 'myapp/base.html' %}
+
+{% block title %}
+Sign Up - Transcendence Project
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Sign Up</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+            </form>
+            <hr>
+            <div class="text-center">
+                <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
