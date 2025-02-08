@@ -1,0 +1,38 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}
+Sign In - Transcendence Project
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Sign In</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Email/Password Sign-In Form -->
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            </form>
+            <hr>
+            <!-- Sign In with 42 Intra -->
+            <div class="text-center">
+                <a href="{% url 'authorize_42' %}" class="btn btn-secondary btn-block">Sign In with 42 Intra</a>
+            </div>
+            <hr>
+            <!-- Sign Up Link -->
+            {% comment %} <div class="text-center">
+                <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+            </div> {% endcomment %}
+        </div>
+    </div>
+</div>
+{% endblock %}

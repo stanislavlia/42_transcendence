@@ -4,6 +4,21 @@ from typing import Dict, Tuple
 from authlib.integrations.httpx_client import OAuth2Client
 from django.conf import settings
 
+from pydantic import BaseModel
+from typing import List, Union, Optional
+
+
+
+class FourtyTwoUserInfo(BaseModel):
+    id: int
+    url: str
+    login: str
+    first_name: str
+    last_name: str
+    email: str
+    avatar_image_link: Optional[str] = None
+
+
 
 class PongUserManager:
     def __init__(self) -> None:
@@ -31,7 +46,7 @@ class PongUserManager:
 
         return token
 
-    def get_user_info(self, token: Dict[str, str]) -> Dict[str, str]:
+    def get_user_info(self) -> Dict[str, str]:
         if not self.client.token:
             raise ValueError("Token is not set. Please fetch the token first.")
 
@@ -39,10 +54,16 @@ class PongUserManager:
         response.raise_for_status()
         return response.json()
     
-    def extract_fields_from_user_info(user_info: dict):
+    def extract_fields_from_user_info(self, user_info: Dict) -> FourtyTwoUserInfo:
 
-        id = user_info["id"]
-        url = user_info["url"]
-        login = user_info["login"]
-        first_name = user_info["first_name"]
-        last_name = user_info["last_name"]
+        return FourtyTwoUserInfo(
+            id=user_info["id"],
+            url=user_info["url"],
+            login=user_info["login"],
+            first_name=user_info["first_name"],
+            last_name=user_info["last_name"],
+            email=user_info["email"],
+            avatar_image_link=user_info.get("image", {}).get("link")
+        )
+
+
