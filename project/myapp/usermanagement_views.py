@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from loguru import logger
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
@@ -53,6 +53,14 @@ def login_view(request):
 
 
 
+def logout_view(request):
+    logger.info(f"LOGOUT USER: {request.user.email}")
+    logout(request)
+
+    return redirect("home")
+
+
+
 def authorize_42_student(request):
     """Endpoint to authorize 42 student using Oauth"""
 
@@ -65,6 +73,8 @@ def authorize_42_student(request):
     return redirect(authorization_url)
 
 
+
+
 def handle_callback_from_42provider(request):
     """Endpoint to receive callback with data about 42 student"""
     
@@ -73,8 +83,24 @@ def handle_callback_from_42provider(request):
     manager = PongUserManager()
     manager.fetch_token(code=code)
 
-    user_info : FourtyTwoUserInfo = manager.extract_fields_from_user_info(manager.get_user_info())
+    user_info: FourtyTwoUserInfo = manager.extract_fields_from_user_info(manager.get_user_info())
     
-    logger.debug(f"USER AUTHENTICATED FROM 42 PROVIDER | user : {user_info}")
-
+    try:
+        user = CustomUser.objects.get(email=user_info.email)
+        logger.info(f"EXISTING USER AUTHENTICATED FROM 42 PROVIDER | user: {user.email}")
+    except CustomUser.DoesNotExist:
+        logger.info(f"NEW USER REGISTERED VIA 42 INTRA OAUTH | user: {user_info.email}")
+        user = CustomUser.objects.create_user(
+            email=user_info.email,
+            nickname=user_info.login,
+            oauth_provider="42",
+            first_name=user_info.first_name,
+            last_name=user_info.last_name,
+            avatar=user_info.avatar_image_link,
+            password=None  # No password since login is via 42 Intra
+        )
+    
+    # Log the user in by attaching them to the session
+    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+    
     return redirect('home')

@@ -39,7 +39,8 @@
     <nav class="navbar navbar-expand-md fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">Transcendence</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -56,6 +57,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'users' %}">Users</a>
                     </li>
+                    {% if user.is_authenticated %}
+                      <li class="nav-item">
+                          <a class="btn btn-logout ml-2" href="{% url 'logout' %}">Log Out</a>
+                      </li>
+                  {% else %}
+                      <li class="nav-item">
+                          <a class="btn btn-signin ml-2" href="{% url 'login' %}">Sign In</a>
+                      </li>
+                  {% endif %}
                 </ul>
             </div>
         </div>

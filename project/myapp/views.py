@@ -9,7 +9,6 @@ from myapp.user_management.ft_api_usermanager import PongUserManager, FourtyTwoU
 from .models import CustomUserManager, CustomUser
 
 
-@login_required(login_url='/login/')
 def home(request):
 
     return render(request, 'myapp/home.html')
@@ -23,7 +22,7 @@ def profile_view(request):
     # will be added later
 
     user_id = request.user.id
-    user : CustomUser = request.user
+    user : CustomUser = request.user #instance from db
 
     logger.debug(f"USER  {user.email} VIEWS HIS PROFILE")
 

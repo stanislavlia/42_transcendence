@@ -28,6 +28,7 @@ class FourtyTwoUserInfo(BaseModel):
 
 
 
+#TODO: find a better name for it
 
 class PongUserManager:
     """
