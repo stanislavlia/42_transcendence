@@ -22,6 +22,14 @@ Sign In - Transcendence Project
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </form>
+            
+            <!-- Failed login message -->
+            {% if is_failed %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    Login failed: {{ fail_reason }}. Please, try again.
+                </div>
+            {% endif %}
+            
             <hr>
             <!-- Sign In with 42 Intra -->
             <div class="text-center">

@@ -34,6 +34,7 @@ def register(request):
 
 def login_view(request):
     if request.method == 'POST':
+        
         email = request.POST.get('email')
         password = request.POST.get('password')
 
@@ -45,9 +46,16 @@ def login_view(request):
             logger.info(f"USER LOGGED IN: {user.email}")
 
             login(request, user)
-            return redirect('home')
+
+            return redirect("home") #successful login
+            
         else:
-            messages.error(request, 'Invalid email or password.')
+            logger.warning(f"USER FAILED TO LOGIN... | he tried email: {email}")
+            failed_context = {"is_failed" : True,
+                              "fail_reason" : "User does not exist"}
+            return render(request, 'myapp/login.html', context=failed_context)
+        
+
     return render(request, 'myapp/login.html')
 
 
