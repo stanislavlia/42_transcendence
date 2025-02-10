@@ -11,20 +11,18 @@ from .models import CustomUserManager, CustomUser
 
 
 ##==================ENDPOINTS TO MANAGE USER REGISTRATION/LOGIN/AUTH=============================
-
-
-
-
 def register(request):
-
 
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+
+        
+
             user.set_password(form.cleaned_data['password1'])
             user.save()
-            logger.info(f'NEW USER REGISTERED | user: {user.email}')
+            logger.info(f'REGISTRATION | NEW USER REGISTERED | user: {user.email}')
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('home')
     else:
@@ -111,3 +109,15 @@ def handle_callback_from_42provider(request):
     login(request, user, backend='django.contrib.auth.backends.ModelBackend')
     
     return redirect('home')
+
+
+
+
+#======================ENDPOINTS TO MODIFY USER PROPERTIES==================
+
+def  modify_nickname():
+    pass
+
+def modify_description():
+    pass
+

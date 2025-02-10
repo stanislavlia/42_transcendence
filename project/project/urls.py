@@ -32,6 +32,7 @@ urlpatterns = [
     path('games/', views.games_history_page, name="games"),
     path('users/', views.users_page, name="users"),
 
+    path('users/profile/<int:id>/', views.view_user_profile, name='view_user_profile'),
 
     #============USER MANAGEMENT==================
     path('register/', usermanagement_views.register, name="register"),

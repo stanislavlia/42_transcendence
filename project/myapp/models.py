@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from loguru import logger
 from enum import Enum
+from django.urls import reverse
+
 
 # ==================== MANAGERS ====================
 class CustomUserManager(BaseUserManager):
@@ -99,6 +101,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             str: The user's email address.
         """
         return self.email
+    
+    def get_profile_link(self):
+        """
+        Returns the URL to the user's profile page.
+        Assumes you have a URL pattern named 'view_user_profile' that takes the user ID as an argument.
+        """
+        return reverse('view_user_profile', args=[self.id])
 
 
 

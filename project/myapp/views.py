@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from loguru import logger
 from django.contrib.auth import authenticate, login
@@ -20,20 +20,45 @@ def home(request):
 
 #==========================INFO PAGES========================
 
+
+def  view_user_profile(request, id):
+    user_profile = get_object_or_404(CustomUser, id=id)
+
+
+    context = {
+        "id": user_profile.id,
+        "first_name": user_profile.first_name,
+        "last_name": user_profile.last_name,
+        "username": user_profile.nickname,   
+        "email": user_profile.email,
+        "avatar_image": user_profile.avatar or DEFAULT_AVATAR_IMG,
+        "registration_date": user_profile.registration_date,
+        "myprofile_flag": False,
+    }
+
+    return render(request, 'myapp/profile.html', context=context)
+
+
+
+
+
 @login_required(login_url='/login/')
 def profile_view(request):
-
+    """View your own profile"""
 
     user_id = request.user.id
     user : CustomUser = request.user #instance from db
 
     logger.debug(f"USER  {user.email} VIEWS HIS PROFILE")
 
-    context = {"first_name" : user.first_name,
+    context = {"id" : user.id ,
+                "first_name" : user.first_name,
                "email" : user.email,
                "username" : user.nickname,
                "avatar_image" : user.avatar if user.avatar else DEFAULT_AVATAR_IMG,
-               "registration_date" : user.registration_date}
+               "registration_date" : user.registration_date,
+               "myprofile_flag" : True}
+    
 
     return render(request, 'myapp/profile.html', context=context)
 
@@ -49,6 +74,7 @@ def users_page(request):
 
     users = CustomUser.objects.all().filter(is_active=True)
 
-    return render(request, "myapp/users.html", context={"users" :users})
+    return render(request, "myapp/users.html", context={"users" : users,
+                                                        })
 
 

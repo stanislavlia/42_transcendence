@@ -15,6 +15,12 @@ Sign Up - Transcendence Project
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
             </form>
+            <!-- Failed login message -->
+            {% if is_failed %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    Registration failed: {{ fail_reason }}
+                </div>
+            {% endif %}
             <hr>
             <div class="text-center">
                 <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>

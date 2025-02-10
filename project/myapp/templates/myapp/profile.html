@@ -6,20 +6,28 @@ Profile - Transcendence Project
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center">Your profile</h1>
+    <h1 class="text-center">Profile</h1>
     <div class="row mt-4">
         <!-- Avatar Column -->
         <div class="col-md-3 text-center">
             <img src="{{ avatar_image }}" alt="Avatar" class="img-thumbnail" style="max-width: 250px;">
-            
         </div>
         <!-- Details Column -->
         <div class="col-md-9">
-            <p class="lead">Welcome to our ping-pong playground, {{ first_name }}!</p>
-            <h3>Your username: {{ username }}</h3>
-            <h3>Your email: {{ email }}</h3>
-            <h3>Registered on: {{ registration_date|date:"F j, Y" }}</h3>
-
+            {% if myprofile_flag %}
+                <p class="lead">Welcome to our ping-pong playground, {{ first_name }}!</p>
+                <h3>Your playerID: {{ id }}</h3>
+                <h3>Your username: {{ username }}</h3>
+                <h3>Your email: {{ email }}</h3>
+                <h3>Registered on: {{ registration_date|date:"F j, Y" }}</h3>
+            {% else %}
+                
+                <h3>playerID: {{ id }}</h3>
+                <h3>name: {{ first_name }}</h3>
+                <h3>username: {{ username }}</h3>
+                <h3>email: {{ email }}</h3>
+                <h3>Registered on: {{ registration_date|date:"F j, Y" }}</h3>
+            {% endif %}
         </div>
     </div>
 </div>
