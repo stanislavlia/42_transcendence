@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.routers import DefaultRouter
-from myapp import views, usermanagement_views
+from myapp.views import views, usermanagement_views, notifications_views
 
 
 
@@ -33,6 +33,11 @@ urlpatterns = [
     path('users/', views.users_page, name="users"),
 
     path('users/profile/<int:id>/', views.view_user_profile, name='view_user_profile'),
+
+    #==========================NOTIFICATIONS===================================
+    path('notifications/', notifications_views.notifications_view, name="notifications_view"),
+    path('notifications/read_all', notifications_views.read_all_notifications_view, name="notifications_read_all"),
+    path('notifications/delete/<int:notification_id>', notifications_views.delete_notification_view, name="notifications_delete"),
 
     #============USER MANAGEMENT==================
     path('register/', usermanagement_views.register, name="register"),

@@ -4,9 +4,9 @@ from loguru import logger
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm
+from myapp.forms import CustomUserCreationForm
 from myapp.user_management.ft_api_usermanager import PongUserManager, FourtyTwoUserInfo
-from .models import CustomUserManager, CustomUser
+from myapp.models import CustomUserManager, CustomUser
 
 
 DEFAULT_AVATAR_IMG = "https://cdn-icons-png.freepik.com/512/164/164440.png"
@@ -42,6 +42,7 @@ def  view_user_profile(request, id):
 
 
 
+
 @login_required(login_url='/login/')
 def profile_view(request):
     """View your own profile"""
@@ -57,7 +58,8 @@ def profile_view(request):
                "username" : user.nickname,
                "avatar_image" : user.avatar if user.avatar else DEFAULT_AVATAR_IMG,
                "registration_date" : user.registration_date,
-               "myprofile_flag" : True}
+               "myprofile_flag" : True,
+               }
     
 
     return render(request, 'myapp/profile.html', context=context)

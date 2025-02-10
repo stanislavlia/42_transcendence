@@ -3,7 +3,7 @@ from django.db import models
 from loguru import logger
 from enum import Enum
 from django.urls import reverse
-
+from django.conf import settings
 
 # ==================== MANAGERS ====================
 class CustomUserManager(BaseUserManager):
@@ -110,6 +110,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return reverse('view_user_profile', args=[self.id])
 
 
+    def get_count_unread_notifications(self) -> int:
+
+        return len(self.notifications.filter(is_read=False))
+    
+    def read_all_notifications(self):
+        self.notifications.filter(is_read=False).update(is_read=True)
 
 
 
@@ -129,12 +135,12 @@ class Friendship(models.Model):
     """Models Friendship between two users. Friendship can be in status: pending, accepted, revoked, rejected"""
 
     from_user = models.ForeignKey(
-        'myapp.CustomUser',
+        settings.AUTH_USER_MODEL,
         related_name='friendship_requests_sent',
         on_delete=models.CASCADE
     )
     to_user = models.ForeignKey(
-        'myapp.CustomUser',
+        settings.AUTH_USER_MODEL,
         related_name='friendship_requests_received',
         on_delete=models.CASCADE
     )
@@ -150,3 +156,28 @@ class Friendship(models.Model):
 
     def __str__(self):
         return f"Friendship: {self.from_user} -> {self.to_user} [{self.status}]"
+    
+
+
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="notifications",
+        on_delete=models.CASCADE
+    )
+    actor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="notifications_sent",
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+    verb = models.CharField(max_length=255)  # e.g., "sent you a friend request"
+    info = models.CharField(max_length=255, blank=True, null=True)  # optional extra info
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification to {self.recipient} - {self.verb}"
+    
+    

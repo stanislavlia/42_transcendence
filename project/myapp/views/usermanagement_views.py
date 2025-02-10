@@ -5,9 +5,9 @@ from loguru import logger
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm
+from myapp.forms import CustomUserCreationForm
 from myapp.user_management.ft_api_usermanager import PongUserManager, FourtyTwoUserInfo
-from .models import CustomUserManager, CustomUser
+from myapp.models import CustomUserManager, CustomUser
 
 
 ##==================ENDPOINTS TO MANAGE USER REGISTRATION/LOGIN/AUTH=============================

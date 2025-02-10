@@ -1,0 +1,38 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}
+Notifications - Transcendence Project
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Notifications</h1>
+    <!-- Read All Button -->
+    <div class="mb-3">
+        <a class="btn btn-primary" href="{% url 'notifications_read_all' %}">Read All</a>
+    </div>
+    
+    {% if notifications %}
+        <ul class="list-group">
+            {% for notification in notifications %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ notification.actor }}</strong> {{ notification.verb }}
+                        {% if notification.target %}
+                            <em>{{ notification.target }}</em>
+                        {% endif %}
+                        <br>
+                        <small class="text-muted">{{ notification.created_at|date:"F j, Y, g:i a" }}</small>
+                    </div>
+                    <!-- Delete Button for each notification -->
+                    <div>
+                        <a class="btn btn-sm btn-danger" href="{% url 'notifications_delete' notification.id %}">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No new notifications.</p>
+    {% endif %}
+</div>
+{% endblock %}
