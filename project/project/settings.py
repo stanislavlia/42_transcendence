@@ -43,6 +43,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 DEBUG = True
+LOGLEVEL = "INFO"
 ALLOWED_HOSTS = []
 
 SITE_ID = 1
@@ -181,3 +182,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # keep existing loggers
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        # This logger will catch Django's internal log messages.
+        'django': {
+            'handlers': ['console'],
+            'level': LOGLEVEL,
+            'propagate': True,
+        },
+    },
+}

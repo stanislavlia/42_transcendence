@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from loguru import logger
-
+from enum import Enum
 
 # ==================== MANAGERS ====================
 class CustomUserManager(BaseUserManager):
@@ -98,3 +98,45 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             str: The user's email address.
         """
         return self.email
+
+
+
+
+
+class   FriendShipStatuses(Enum):
+    PENDING = "pending"
+    ACCEPTED = "accepted"
+    REVOKED = "revoked"
+    REJECTED = "rejected"
+
+    @classmethod
+    def get_list_of_choices(cls):
+        # Returns a list of tuples: (value, human-readable label)
+        return [(status.value, status.value.capitalize()) for status in cls]
+    
+ 
+class Friendship(models.Model):
+    """Models Friendship between two users. Friendship can be in status: pending, accepted, revoked, rejected"""
+
+    from_user = models.ForeignKey(
+        'myapp.CustomUser',
+        related_name='friendship_requests_sent',
+        on_delete=models.CASCADE
+    )
+    to_user = models.ForeignKey(
+        'myapp.CustomUser',
+        related_name='friendship_requests_received',
+        on_delete=models.CASCADE
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=FriendShipStatuses.get_list_of_choices(),
+        default=FriendShipStatuses.PENDING.value,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f"Friendship: {self.from_user} -> {self.to_user} [{self.status}]"

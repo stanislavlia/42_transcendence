@@ -9,10 +9,9 @@ from .forms import CustomUserCreationForm
 from myapp.user_management.ft_api_usermanager import PongUserManager, FourtyTwoUserInfo
 from .models import CustomUserManager, CustomUser
 
+
 ##==================ENDPOINTS TO MANAGE USER REGISTRATION/LOGIN/AUTH=============================
-##
-##
-##
+
 
 
 
@@ -39,7 +38,7 @@ def login_view(request):
         password = request.POST.get('password')
 
         #goes to Db, search for user, compare password hash and return instance
-        user = authenticate(request, username=email, password=password)
+        user : CustomUser = authenticate(request, username=email, password=password)
 
 
         if user is not None:
