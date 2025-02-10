@@ -79,6 +79,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=150, blank=True, null=False)
     
     registration_date = models.DateTimeField(auto_now_add=True)
+
     avatar = models.URLField(blank=True, null=True)
     oauth_provider = models.CharField(max_length=50, blank=True, null=True)
     oauth_id = models.CharField(max_length=255, blank=True, null=True, unique=True)

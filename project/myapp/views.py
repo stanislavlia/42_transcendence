@@ -9,6 +9,9 @@ from myapp.user_management.ft_api_usermanager import PongUserManager, FourtyTwoU
 from .models import CustomUserManager, CustomUser
 
 
+DEFAULT_AVATAR_IMG = "https://cdn-icons-png.freepik.com/512/164/164440.png"
+
+
 def home(request):
 
     return render(request, 'myapp/home.html')
@@ -19,7 +22,7 @@ def home(request):
 
 @login_required(login_url='/login/')
 def profile_view(request):
-    # will be added later
+
 
     user_id = request.user.id
     user : CustomUser = request.user #instance from db
@@ -28,7 +31,9 @@ def profile_view(request):
 
     context = {"first_name" : user.first_name,
                "email" : user.email,
-               "username" : user.nickname}
+               "username" : user.nickname,
+               "avatar_image" : user.avatar if user.avatar else DEFAULT_AVATAR_IMG,
+               "registration_date" : user.registration_date}
 
     return render(request, 'myapp/profile.html', context=context)
 
@@ -40,8 +45,10 @@ def games_history_page(request):
 
 
 
-@login_required(login_url='/login/')
 def users_page(request):
-    return render(request, "myapp/users.html")
+
+    users = CustomUser.objects.all().filter(is_active=True)
+
+    return render(request, "myapp/users.html", context={"users" :users})
 
 

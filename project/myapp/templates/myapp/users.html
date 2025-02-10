@@ -5,8 +5,20 @@
 {% endblock %}
 
 {% block content %}
-    <div class="text-center mt-5">
-        <h1>Welcome to Transcendence</h1>
-        <p class="lead">Search of user will be here</p>
+    <div class="container mt-5">
+        <h1 class="text-center">Our Players</h1>
+        {% if users %}
+            <ul class="list-group">
+                {% for user in users %}
+                    <li class="list-group-item">
+                        <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+                        <span class="text-muted">({{ user.nickname }})</span>
+                        <span class="text-muted">email: {{ user.email }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-center">No users found.</p>
+        {% endif %}
     </div>
 {% endblock %}
