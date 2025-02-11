@@ -5,6 +5,11 @@ from enum import Enum
 from django.urls import reverse
 from django.conf import settings
 
+
+
+DEFAULT_AVATAR_IMG = "https://cdn-icons-png.freepik.com/512/164/164440.png"
+
+
 # ==================== MANAGERS ====================
 class CustomUserManager(BaseUserManager):
     """
@@ -82,11 +87,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     registration_date = models.DateTimeField(auto_now_add=True)
 
-    avatar = models.URLField(blank=True, null=True)
+    avatar = models.URLField(blank=True, null=True, default=DEFAULT_AVATAR_IMG)
+    description = models.TextField(blank=True, null=True)
     oauth_provider = models.CharField(max_length=50, blank=True, null=True)
     oauth_id = models.CharField(max_length=255, blank=True, null=True, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+
 
     objects = CustomUserManager()
 

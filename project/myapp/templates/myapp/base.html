@@ -68,22 +68,14 @@
                                 </a>
                             {% endwith %}
                         </li>
-                        {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-logout ml-2" href="{% url 'logout' %}">Log Out</a>
+                        </li>
+                    {% else %}
                         <li class="nav-item">
                             <a class="btn btn-signin ml-2" href="{% url 'login' %}">Sign In</a>
                         </li>
                     {% endif %}
-
-                    {% if user.is_authenticated %}
-                      <li class="nav-item">
-                          <a class="btn btn-logout ml-2" href="{% url 'logout' %}">Log Out</a>
-                      </li>
-                  {% else %}
-                      <li class="nav-item">
-                          <a class="btn btn-signin ml-2" href="{% url 'login' %}">Sign In</a>
-                      </li>
-                  {% endif %}
-
                 </ul>
             </div>
         </div>

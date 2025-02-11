@@ -45,4 +45,8 @@ urlpatterns = [
     path('logout/', usermanagement_views.logout_view, name="logout"),
     path('authorize/', usermanagement_views.authorize_42_student, name='authorize_42'),
     path('auth/callback/42', usermanagement_views.handle_callback_from_42provider, name='handle_42_callback'),
+
+
+    path('profile/modify_description/<int:user_id>/', usermanagement_views.modify_description, name="modify_description")
+
 ]

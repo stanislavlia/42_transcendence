@@ -33,6 +33,7 @@ def  view_user_profile(request, id):
         "email": user_profile.email,
         "avatar_image": user_profile.avatar or DEFAULT_AVATAR_IMG,
         "registration_date": user_profile.registration_date,
+        "description" : user_profile.description or "No description provided",
         "myprofile_flag": False,
     }
 
@@ -58,6 +59,7 @@ def profile_view(request):
                "username" : user.nickname,
                "avatar_image" : user.avatar if user.avatar else DEFAULT_AVATAR_IMG,
                "registration_date" : user.registration_date,
+               "description" : user.description if user.description else "No description provided",
                "myprofile_flag" : True,
                }
     

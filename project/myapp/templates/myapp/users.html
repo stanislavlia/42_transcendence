@@ -8,18 +8,25 @@
 <div class="container mt-5">
     <h1 class="text-center">Our Players</h1>
     {% if users %}
-        <ul class="list-group">
-            {% for user in users %}
-                <li class="list-group-item">
-                    <!-- Make the user's nickname clickable -->
-                    <a href="{{ user.get_profile_link }}">{{ user.nickname }}</a>
-                    <br>
-                    <span class="text-muted">Full name: {{ user.first_name }} {{ user.last_name }}</span>
-                    <br>
-                    <span class="text-muted">Email: {{ user.email }}</span>
-                </li>
-            {% endfor %}
-        </ul>
+        <div style="max-height: 400px; overflow-y: auto;">
+            <ul class="list-group">
+                {% for user in users %}
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ user.avatar }}" alt="Avatar" class="img-thumbnail mr-3" style="max-width: 80px;">
+                            <div>
+                                <!-- Make the user's nickname clickable -->
+                                <a href="{{ user.get_profile_link }}">{{ user.nickname }}</a>
+                                <br>
+                                <span class="text-muted">Full name: {{ user.first_name }} {{ user.last_name }}</span>
+                                <br>
+                                <span class="text-muted">Email: {{ user.email }}</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% else %}
         <p class="text-center">No users found.</p>
     {% endif %}

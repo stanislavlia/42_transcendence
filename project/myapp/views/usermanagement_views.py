@@ -1,5 +1,5 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, JsonResponse
 from loguru import logger
 from django.contrib.auth import authenticate, login, logout
@@ -115,9 +115,24 @@ def handle_callback_from_42provider(request):
 
 #======================ENDPOINTS TO MODIFY USER PROPERTIES==================
 
-def  modify_nickname():
-    pass
+@login_required
+def modify_description(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
 
-def modify_description():
-    pass
+    # Only allow the user to modify their own description
+    if request.user != user:
+        logger.error(f"Cannot modify desciption of another user...")
+        return redirect('profile')
 
+    if request.method == 'POST':
+        # Get the new description from the form submission
+        new_description = request.POST.get('description', '').strip()
+        user.description = new_description
+        user.save()
+        logger.info(f"User: {user.email} updated his description")
+        return redirect('profile')
+    else:
+        context = {
+            'user': user,  # includes user.description
+        }
+        return render(request, 'myapp/modify_description.html', context)

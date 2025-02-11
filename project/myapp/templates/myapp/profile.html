@@ -6,29 +6,52 @@ Profile - Transcendence Project
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center">Profile</h1>
-    <div class="row mt-4">
-        <!-- Avatar Column -->
-        <div class="col-md-3 text-center">
-            <img src="{{ avatar_image }}" alt="Avatar" class="img-thumbnail" style="max-width: 250px;">
-        </div>
-        <!-- Details Column -->
-        <div class="col-md-9">
-            {% if myprofile_flag %}
-                <p class="lead">Welcome to our ping-pong playground, {{ first_name }}!</p>
-                <h3>Your playerID: {{ id }}</h3>
-                <h3>Your username: {{ username }}</h3>
-                <h3>Your email: {{ email }}</h3>
-                <h3>Registered on: {{ registration_date|date:"F j, Y" }}</h3>
-            {% else %}
-                
-                <h3>playerID: {{ id }}</h3>
-                <h3>name: {{ first_name }}</h3>
-                <h3>username: {{ username }}</h3>
-                <h3>email: {{ email }}</h3>
-                <h3>Registered on: {{ registration_date|date:"F j, Y" }}</h3>
-            {% endif %}
-        </div>
+  <h1 class="text-center mb-4">Profile</h1>
+  <div class="row">
+    <!-- Avatar Column -->
+    <div class="col-md-3 text-center mb-3">
+      <img src="{{ avatar_image }}" alt="Avatar" class="img-thumbnail" style="max-width: 250px;">
     </div>
+    <!-- Profile Details Column -->
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header">
+          {% if myprofile_flag %}
+            Welcome to our ping-pong playground, {{ first_name }}!
+          {% else %}
+            User Profile
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Player ID: {{ id }}</h5>
+          <p class="card-text"><strong>Name:</strong> {{ first_name }} {{ last_name }}</p>
+          <p class="card-text"><strong>Username:</strong> {{ username }}</p>
+          <p class="card-text"><strong>Email:</strong> {{ email }}</p>
+          <p class="card-text"><strong>Registered on:</strong> {{ registration_date|date:"F j, Y" }}</p>
+          <p class="card-text">
+            <strong>Description:</strong> {{ description|default:"No description provided." }}
+          </p>
+          {% if myprofile_flag %}
+            <!-- Edit Description Button -->
+            <a class="btn btn-secondary btn-sm" data-toggle="collapse" href="#editDescriptionForm" role="button" aria-expanded="false" aria-controls="editDescriptionForm">
+              Edit Description
+            </a>
+            <!-- Collapsible Form -->
+            <div class="collapse mt-3" id="editDescriptionForm">
+              <div class="card card-body">
+                <form method="post" action="{% url 'modify_description' id %}">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <textarea name="description" class="form-control" rows="3" placeholder="Enter your new description...">{{ description }}</textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
